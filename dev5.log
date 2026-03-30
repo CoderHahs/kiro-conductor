@@ -1,0 +1,11 @@
+
+> kiro-conductor@1.0.0 dev:vite
+> vite
+
+
+  VITE v5.4.21  ready in 380 ms
+
+  ➜  Local:   http://localhost:3000/
+  ➜  Network: use --host to expose
+7:02:22 PM [vite] vite.config.ts changed, restarting server...
+7:02:23 PM [vite] server restarted.
