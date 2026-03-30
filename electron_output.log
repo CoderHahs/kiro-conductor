@@ -1,0 +1,6 @@
+
+> kiro-conductor@1.0.0 dev:electron
+> wait-on http://localhost:3000 && tsc --project tsconfig.electron.json && node rename-electron-entry.js && electron .
+
+[10456:0330/211346.668917:ERROR:ozone_platform_x11.cc(240)] Missing X server or $DISPLAY
+[10456:0330/211346.669036:ERROR:env.cc(255)] The platform failed to initialize.  Exiting.
