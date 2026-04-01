@@ -1,0 +1,22 @@
+
+> kiro-conductor@1.0.0 dev
+> concurrently "npm run dev:vite" "npm run dev:electron"
+
+[0]
+[0] > kiro-conductor@1.0.0 dev:vite
+[0] > vite
+[0]
+[1]
+[1] > kiro-conductor@1.0.0 dev:electron
+[1] > wait-on http://localhost:3000 && tsc --project tsconfig.electron.json && node rename-electron-entry.js && electron .
+[1]
+[0] Port 3000 is in use, trying another one...
+[0] Port 3001 is in use, trying another one...
+[0]
+[0]   VITE v5.4.21  ready in 699 ms
+[0]
+[0]   ➜  Local:   http://localhost:3002/
+[0]   ➜  Network: use --host to expose
+[1] [14775:0401/001923.580841:ERROR:ozone_platform_x11.cc(240)] Missing X server or $DISPLAY
+[1] [14775:0401/001923.580934:ERROR:env.cc(255)] The platform failed to initialize.  Exiting.
+[1] npm run dev:electron exited with code 1
