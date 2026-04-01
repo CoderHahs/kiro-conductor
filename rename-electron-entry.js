@@ -20,12 +20,10 @@ function walkAndRename(dir) {
         const newPath = path.join(dir, file.replace(/\.js$/, '.cjs'));
         fs.renameSync(filePath, newPath);
 
-        // Update imports if it's main.js
-        if (file === 'main.js' && dir === distElectronDir) {
-          let content = fs.readFileSync(newPath, 'utf8');
-          content = content.replace(/\.js'/g, '.cjs\'').replace(/\.js"/g, '.cjs"');
-          fs.writeFileSync(newPath, content);
-        }
+        // Update imports in all files
+        let content = fs.readFileSync(newPath, 'utf8');
+        content = content.replace(/\.js'/g, '.cjs\'').replace(/\.js"/g, '.cjs"');
+        fs.writeFileSync(newPath, content);
       }
     }
   }
