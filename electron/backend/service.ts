@@ -144,7 +144,9 @@ export class BackendService {
     return this.workspaceManager.removeRepository(repoId);
   }
 
-  async updateRepository(id: string, config: any) { return { success: true }; }
+  async updateRepository(id: string, config: any) {
+    return this.workspaceManager.updateRepository(id, config);
+  }
 
   async createWorkspace(args: any) {
     return this.workspaceManager.createWorkspace(args);
@@ -162,8 +164,24 @@ export class BackendService {
     return this.workspaceManager.archiveWorkspace(workspaceId);
   }
 
-  async restoreWorkspace(id: string) { return { success: true }; }
-  async deleteWorkspace(id: string) { return { success: true }; }
+  async restoreWorkspace(id: string) {
+    return this.workspaceManager.restoreWorkspace(id);
+  }
+
+  async deleteWorkspace(id: string) {
+    try {
+      const stmt = this.db.prepare('DELETE FROM workspaces WHERE id = ?');
+      const result = stmt.run(id);
+
+      if (result.changes === 0) {
+        throw new Error('Workspace not found');
+      }
+
+      return { success: true };
+    } catch (error: any) {
+      return { success: false, error: { code: 'DELETE_WORKSPACE_ERROR', message: error.message } };
+    }
+  }
 
   async createAgent(workspaceId: string, args: any) {
     return this.agentOrchestrator.createAgent(workspaceId, args);

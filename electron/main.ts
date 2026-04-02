@@ -104,7 +104,11 @@ function setupIPC(backend: BackendService) {
     });
 
     if (!result.canceled) {
-      return backend.addRepository(result.filePaths[0]);
+      const resp = await backend.addRepository(result.filePaths[0]);
+      if (resp.success) {
+        backend.getIOServer().emit('repository:created', resp.data);
+      }
+      return resp;
     }
   });
 
@@ -113,16 +117,28 @@ function setupIPC(backend: BackendService) {
   });
 
   ipcMain.handle('repo:remove', async (event, repoId) => {
-    return backend.removeRepository(repoId);
+    const resp = await backend.removeRepository(repoId);
+    if (resp.success) {
+      backend.getIOServer().emit('repository:deleted', repoId);
+    }
+    return resp;
   });
 
   ipcMain.handle('repo:configure', async (event, repoId, config) => {
-    return backend.updateRepository(repoId, config);
+    const resp = await backend.updateRepository(repoId, config);
+    if (resp.success) {
+      backend.getIOServer().emit('repository:updated', resp.data);
+    }
+    return resp;
   });
 
   // Workspace handlers
   ipcMain.handle('workspace:create', async (event, args) => {
-    return backend.createWorkspace(args);
+    const resp = await backend.createWorkspace(args);
+    if (resp.success) {
+      backend.getIOServer().emit('workspace:created', resp.data);
+    }
+    return resp;
   });
 
   ipcMain.handle('workspace:list', async (event, repoId) => {
@@ -134,15 +150,27 @@ function setupIPC(backend: BackendService) {
   });
 
   ipcMain.handle('workspace:archive', async (event, workspaceId) => {
-    return backend.archiveWorkspace(workspaceId);
+    const resp = await backend.archiveWorkspace(workspaceId);
+    if (resp.success) {
+      backend.getIOServer().emit('workspace:archived', (resp as any).data || workspaceId);
+    }
+    return resp;
   });
 
   ipcMain.handle('workspace:restore', async (event, workspaceId) => {
-    return backend.restoreWorkspace(workspaceId);
+    const resp = await backend.restoreWorkspace(workspaceId);
+    if (resp.success) {
+      backend.getIOServer().emit('workspace:restored', (resp as any).data || workspaceId);
+    }
+    return resp;
   });
 
   ipcMain.handle('workspace:delete', async (event, workspaceId) => {
-    return backend.deleteWorkspace(workspaceId);
+    const resp = await backend.deleteWorkspace(workspaceId);
+    if (resp.success) {
+      backend.getIOServer().emit('workspace:deleted', workspaceId);
+    }
+    return resp;
   });
 
   // Agent handlers
